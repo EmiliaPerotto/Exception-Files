@@ -7,35 +7,48 @@ public class ExceptionFiles{
     boolean checkFile = false;
     String filename = " ";
     System.out.println("Enter a filename: ");
-    while(checkFile == false){
+    while(true){
     try{
     filename = in.nextLine();
     Scanner fin = new Scanner(new File(filename));
     break;
     }
-    catch(FileNotFoundException e){
+    catch(Exception e){
       System.out.print("File not found. Enter a filename: ");
       continue;
     }
      }
     Scanner fin = new Scanner(new File(filename));
-    ArrayList<Integer> list = new ArrayList<Integer>();
-    boolean checkInt = true;
-    String error = " ";
+    ArrayList<Integer> arr = new ArrayList<Integer>();
+    int empty = 0;
+    double mean = 0.0;
     try{
-    while(fin.hasNextLine() && checkInt == true){
-      list.add(fin.nextInt());
+    while(fin.hasNextLine()){
+      empty = fin.nextInt();
+      arr.add(empty);
+      mean = mean + empty;
     }
     }
     catch(InputMismatchException e){
-      error = fin.nextLine();
-      System.out.println(error + " was skipped");
-      checkInt = true;
+      System.out.println(fin.nextLine() + " was skipped");
     }
-    System.out.println(list);
-    // FileWriter fout = new FileWriter("output.txt");
-    // fout.write();
-    // fout.write("\n");
+
+    FileWriter fout = new FileWriter("output.txt");
+    Collections.sort(arr);
+    double median = 0.0;
+    mean = mean / arr.size();
+    String smean = String.format("Mean : %.3f", mean);
+    fout.write(smean + "\n");
+    if(arr.size()%2==0){
+      median = (arr.get((arr.size() - 1)/2) + arr.get(((arr.size()-1)/2)+1)) /2;
+    }
+    else{
+      median = arr.get((arr.size()-1)/2);
+    }
+    String smed = String.format("Median : %.1f", median);
+    fout.write(smed + "\n");
+    fout.write("Max " + arr.get(0) + "\n");
+    fout.write("Min " + arr.get(arr.size()-1) + "\n");
     // fout.close();
   }
 }
